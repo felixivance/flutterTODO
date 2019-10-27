@@ -7,14 +7,73 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
+
+  TextEditingController _categoryName = new TextEditingController();
+
+  TextEditingController _categoryDescription = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Categories"),
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: (){
+            Navigator.of(context).pop();
+          },
+        ),
       ),
-      drawer: DrawerNavigation(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          _addFormDialog(context);
+        },
+        child: Icon(Icons.add),
+      ),
     );
+  }
+
+  _addFormDialog(BuildContext context){
+
+    return showDialog(context: context, barrierDismissible: true, builder: (param){
+      return AlertDialog(
+        actions: <Widget>[
+          FlatButton(
+            onPressed: (){
+              Navigator.of(context).pop();
+            },
+            child: Text("Cancel"),
+          ),
+          FlatButton(
+            onPressed: null,
+            child: Text("Save"),
+          )
+        ],
+        title: Text("Add Category"),
+        content: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              TextField(
+                controller: _categoryName,
+                decoration: InputDecoration(
+                    labelText: "Category Name",
+                    hintText: "Write the category name"
+                ),
+              ),
+              TextField(
+                controller: _categoryDescription,
+                decoration: InputDecoration(
+                  labelText: "Description ",
+                  hintText: "Write the description",
+                ),
+                maxLines: 3,
+              ),
+
+            ],
+          ),
+        ),
+      );
+    });
   }
 }
