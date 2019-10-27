@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/helpers/drawer.dart';
+import 'package:flutter_todo_app/models/category.dart';
+import 'package:flutter_todo_app/services/categoryService.dart';
 
 class CategoryPage extends StatefulWidget {
   @override
@@ -11,6 +13,9 @@ class _CategoryPageState extends State<CategoryPage> {
   TextEditingController _categoryName = new TextEditingController();
 
   TextEditingController _categoryDescription = new TextEditingController();
+
+  var _category = new Category();
+  var _categoryService = new CategoryService();
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +51,12 @@ class _CategoryPageState extends State<CategoryPage> {
             child: Text("Cancel"),
           ),
           FlatButton(
-            onPressed: null,
+            onPressed: (){
+              this._category.name = _categoryName.text;
+              this._category.description = _categoryDescription.text;
+
+              _categoryService.saveCategory(this._category);
+            },
             child: Text("Save"),
           )
         ],
