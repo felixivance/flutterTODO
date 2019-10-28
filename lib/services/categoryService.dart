@@ -10,6 +10,10 @@ class CategoryService{
   }
 
   saveCategory(Category category) async{
-    return await _operations.save("category", category.categoryMap());
+    return await _operations.save("categories", category.categoryMap());
+  }
+
+  getCategories() async{
+    return await _operations.getAll("categories");
   }
 }

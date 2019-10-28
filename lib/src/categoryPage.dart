@@ -17,6 +17,39 @@ class _CategoryPageState extends State<CategoryPage> {
   var _category = new Category();
   var _categoryService = new CategoryService();
 
+//  method 1
+  List <Widget> _categoryList = List<Widget>();
+
+  @override
+  void initState(){
+    super.initState();
+    getAllCategories();
+  }
+
+  getAllCategories() async{
+
+    var categories = await _categoryService.getCategories();
+
+    categories.forEach((category){
+      print(category['name']);
+
+      //method 1
+      setState(() {
+        _categoryList.add(
+            Card(
+              child: ListTile(
+                leading: IconButton( icon: Icon(Icons.edit, color: Colors.green,) , onPressed: (){},),
+                title: Text(category['name']),
+                trailing: IconButton( icon: Icon(Icons.delete, color: Colors.red,) , onPressed: (){},),
+              ),
+
+            )
+        );
+      });
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +68,9 @@ class _CategoryPageState extends State<CategoryPage> {
           _addFormDialog(context);
         },
         child: Icon(Icons.add),
+      ),
+      body: Column(
+        children: _categoryList,
       ),
     );
   }
@@ -57,7 +93,14 @@ class _CategoryPageState extends State<CategoryPage> {
 
                var result =    await  _categoryService.saveCategory(this._category);
 
-               print (result);
+               print (result); //returns 1 for success and 0 for failure
+
+              _categoryList.clear(); //clear array
+
+              getAllCategories();
+
+              Navigator.of(context).pop();
+
             },
             child: Text("Save"),
           )
@@ -88,4 +131,6 @@ class _CategoryPageState extends State<CategoryPage> {
       );
     });
   }
+
+
 }
