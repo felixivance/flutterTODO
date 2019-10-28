@@ -23,4 +23,8 @@ class CategoryService{
   getCategoryById(categoryId) async{
     return await _operations.getById("categories", categoryId);
   }
+
+  deleteCategoryById(categoryId) async{
+    return await _operations.deleteItem("categories", categoryId);
+  }
 }

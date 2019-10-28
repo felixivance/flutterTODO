@@ -18,25 +18,30 @@ class Operations{
   }
 
   save(table, data) async{
-    var $conn = await database;
+    var conn = await database;
 
-    return await $conn.insert(table, data);
+    return await conn.insert(table, data);
   }
 
   getAll(table) async{
-    var $conn = await database;
-    return await $conn.query(table);
+    var conn = await database;
+    return await conn.query(table);
   }
 
   getById(table, id) async{
-    var $conn = await database;
-    return await $conn.query(table, where: 'id=?',whereArgs: [id]);
+    var conn = await database;
+    return await conn.query(table, where: 'id=?',whereArgs: [id]);
   }
 
   updateItem(table, item) async{
     print(item.toString());
-    var $conn = await database;
+    var conn = await database;
 
-    return await $conn.update(table, item, where: 'id=?', whereArgs: [item['id']] );
+    return await conn.update(table, item, where: 'id=?', whereArgs: [item['id']] );
+  }
+
+  deleteItem(table, itemId) async{
+    var conn = await database;
+    return await conn.delete(table, where: 'id=?', whereArgs: [itemId]);
   }
 }

@@ -99,7 +99,9 @@ class _CategoryPageState extends State<CategoryPage> {
                   },),
                   title: Text(_categoryList[index].name),
                   subtitle: Text(_categoryList[index].description),
-                  trailing: IconButton( icon: Icon(Icons.delete, color: Colors.red,) , onPressed: (){},),
+                  trailing: IconButton( icon: Icon(Icons.delete, color: Colors.red,) , onPressed: (){
+                    _deleteConfirmDialog(context, _categoryList[index].id);
+                  },),
 
                 ),
               )
@@ -233,5 +235,40 @@ class _CategoryPageState extends State<CategoryPage> {
       );
     });
   }
+  _deleteConfirmDialog(BuildContext context, int index){
 
+    return showDialog(context: context, barrierDismissible: true, builder: (param){
+      return AlertDialog(
+        actions: <Widget>[
+          FlatButton(
+            onPressed: (){
+              Navigator.of(context).pop();
+            },
+            child: Text("Cancel"),
+          ),
+          FlatButton(
+            onPressed: () async{
+              print('index is '+index.toString());
+
+              var result =    await  _categoryService.deleteCategoryById(index );
+
+              print (result);
+
+              _categoryList.clear(); //clear array
+
+              getAllCategories();
+
+              Navigator.of(context).pop();
+
+            },
+            child: Text("Delete", style: TextStyle(color: Colors.red),),
+          )
+        ],
+        title: Center(child: Text("Confirm Deleting of Category"),),
+        content: SingleChildScrollView(
+          child: Text("Please confirm before deleting of category, this process is irreversible!")
+        ),
+      );
+    });
+  }
 }
