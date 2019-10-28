@@ -16,4 +16,11 @@ class CategoryService{
   getCategories() async{
     return await _operations.getAll("categories");
   }
+  updateCategory(Category category) async{
+    return await _operations.updateItem('categories', category.categoryMap());
+  }
+
+  getCategoryById(categoryId) async{
+    return await _operations.getById("categories", categoryId);
+  }
 }

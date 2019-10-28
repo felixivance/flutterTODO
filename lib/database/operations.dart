@@ -27,4 +27,16 @@ class Operations{
     var $conn = await database;
     return await $conn.query(table);
   }
+
+  getById(table, id) async{
+    var $conn = await database;
+    return await $conn.query(table, where: 'id=?',whereArgs: [id]);
+  }
+
+  updateItem(table, item) async{
+    print(item.toString());
+    var $conn = await database;
+
+    return await $conn.update(table, item, where: 'id=?', whereArgs: [item['id']] );
+  }
 }

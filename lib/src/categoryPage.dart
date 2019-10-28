@@ -52,6 +52,7 @@ class _CategoryPageState extends State<CategoryPage> {
     //method 2
     setState(() {
       var model = Category();
+      model.id = category['id'];
       model.name = category['name'];
       model.description = category['description'];
 
@@ -88,7 +89,14 @@ class _CategoryPageState extends State<CategoryPage> {
             children: <Widget>[
               Card(
                 child: ListTile(
-                  leading: IconButton( icon: Icon(Icons.edit, color: Colors.green,) , onPressed: (){},),
+                  leading: IconButton( icon: Icon(Icons.edit, color: Colors.green,) , onPressed: (){
+
+                    this._categoryName.text = _categoryList[index].name;
+                    this._categoryDescription.text = _categoryList[index].description;
+
+                    _editFormDialog(context, _categoryList[index].id);
+
+                  },),
                   title: Text(_categoryList[index].name),
                   subtitle: Text(_categoryList[index].description),
                   trailing: IconButton( icon: Icon(Icons.delete, color: Colors.red,) , onPressed: (){},),
@@ -166,5 +174,64 @@ class _CategoryPageState extends State<CategoryPage> {
     });
   }
 
+  _editFormDialog(BuildContext context, int index){
+
+    return showDialog(context: context, barrierDismissible: true, builder: (param){
+      return AlertDialog(
+        actions: <Widget>[
+          FlatButton(
+            onPressed: (){
+              Navigator.of(context).pop();
+            },
+            child: Text("Cancel"),
+          ),
+          FlatButton(
+            onPressed: () async{
+              print('index is '+index.toString());
+
+              this._category.id = index.toInt();
+              this._category.name = _categoryName.text ?? 'No Name';
+              this._category.description = _categoryDescription.text ?? 'No Description';
+
+              var result =    await  _categoryService.updateCategory(this._category );
+
+              print (result); //returns 1 for success and 0 for failure
+
+              _categoryList.clear(); //clear array
+
+              getAllCategories();
+
+              Navigator.of(context).pop();
+
+            },
+            child: Text("Update"),
+          )
+        ],
+        title: Center(child: Text("Update Category"),),
+        content: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              TextField(
+                controller: _categoryName,
+                decoration: InputDecoration(
+                    labelText: "Category Name",
+                    hintText: "Write the category name"
+                ),
+              ),
+              TextField(
+                controller: _categoryDescription,
+                decoration: InputDecoration(
+                  labelText: "Description ",
+                  hintText: "Write the description",
+                ),
+                maxLines: 3,
+              ),
+
+            ],
+          ),
+        ),
+      );
+    });
+  }
 
 }
