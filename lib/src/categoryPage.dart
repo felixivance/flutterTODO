@@ -18,7 +18,9 @@ class _CategoryPageState extends State<CategoryPage> {
   var _categoryService = new CategoryService();
 
 //  method 1
-  List <Widget> _categoryList = List<Widget>();
+//  List <Widget> _categoryList = List<Widget>();
+
+  List<Category> _categoryList = List<Category>();
 
   @override
   void initState(){
@@ -34,18 +36,28 @@ class _CategoryPageState extends State<CategoryPage> {
       print(category['name']);
 
       //method 1
-      setState(() {
-        _categoryList.add(
-            Card(
-              child: ListTile(
-                leading: IconButton( icon: Icon(Icons.edit, color: Colors.green,) , onPressed: (){},),
-                title: Text(category['name']),
-                trailing: IconButton( icon: Icon(Icons.delete, color: Colors.red,) , onPressed: (){},),
-              ),
+//      setState(() {
+////        _categoryList.add(
+////            Card(
+////              child: ListTile(
+//                leading: IconButton( icon: Icon(Icons.edit, color: Colors.green,) , onPressed: (){},),
+//                title: Text(category['name']),
+//                trailing: IconButton( icon: Icon(Icons.delete, color: Colors.red,) , onPressed: (){},),
+////              ),
+////
+////            )
+////        );
+////      });
 
-            )
-        );
-      });
+    //method 2
+    setState(() {
+      var model = Category();
+      model.name = category['name'];
+      model.description = category['description'];
+
+      _categoryList.add(model);
+    });
+
 
     });
   }
@@ -69,9 +81,28 @@ class _CategoryPageState extends State<CategoryPage> {
         },
         child: Icon(Icons.add),
       ),
-      body: Column(
-        children: _categoryList,
-      ),
+      body: ListView(
+        scrollDirection: Axis.vertical,
+        children: List.generate(_categoryList.length, (index){
+          return Column(
+            children: <Widget>[
+              Card(
+                child: ListTile(
+                  leading: IconButton( icon: Icon(Icons.edit, color: Colors.green,) , onPressed: (){},),
+                  title: Text(_categoryList[index].name),
+                  subtitle: Text(_categoryList[index].description),
+                  trailing: IconButton( icon: Icon(Icons.delete, color: Colors.red,) , onPressed: (){},),
+
+                ),
+              )
+            ],
+          );
+        }),
+      )
+      //method 1
+//      Column(
+//        children: _categoryList,
+//      ),
     );
   }
 
