@@ -51,11 +51,13 @@ class _CategoryPageState extends State<CategoryPage> {
             child: Text("Cancel"),
           ),
           FlatButton(
-            onPressed: (){
+            onPressed: () async{
               this._category.name = _categoryName.text;
               this._category.description = _categoryDescription.text;
 
-              _categoryService.saveCategory(this._category);
+               var result =    await  _categoryService.saveCategory(this._category);
+
+               print (result);
             },
             child: Text("Save"),
           )
