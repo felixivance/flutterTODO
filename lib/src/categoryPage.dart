@@ -103,6 +103,9 @@ class _CategoryPageState extends State<CategoryPage> {
 //      Column(
 //        children: _categoryList,
 //      ),
+    //method 3
+      //still using the same data set as method 1
+      //body: ListView.builder(itemCount: _categoryList.length  , itemBuilder:(context, index){ .. from here same as the return statement in method 2
     );
   }
 
